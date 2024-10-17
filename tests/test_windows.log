@@ -1,0 +1,32 @@
+Image Name                     PID Session Name        Session#    Mem Usage
+========================= ======== ================ =========== ============
+System Idle Process              0 Services                   0          8 K
+System                           4 Services                   0      4,400 K
+Registry                        96 Services                   0     51,932 K
+smss.exe                       376 Services                   0      1,024 K
+csrss.exe                      524 Services                   0      4,756 K
+wininit.exe                    612 Services                   0      6,828 K
+csrss.exe                      620 Console                    1      5,636 K
+services.exe                   700 Services                   0     10,968 K
+lsass.exe                      708 Services                   0     15,772 K
+svchost.exe                    816 Services                   0     26,380 K
+fontdrvhost.exe                844 Services                   0      3,564 K
+svchost.exe                    920 Services                   0     11,676 K
+svchost.exe                    380 Services                   0     13,052 K
+dwm.exe                        988 Console                    1     79,392 K
+svchost.exe                   1016 Services                   0     11,704 K
+svchost.exe                    436 Services                   0      8,820 K
+svchost.exe                    444 Services                   0     10,212 K
+svchost.exe                   1112 Services                   0     11,500 K
+svchost.exe                   1120 Services                   0      7,480 K
+svchost.exe                   1316 Services                   0      7,728 K
+svchost.exe                   1324 Services                   0      9,968 K
+svchost.exe                   1428 Services                   0     13,724 K
+spoolsv.exe                   1684 Services                   0     15,500 K
+svchost.exe                   1764 Services                   0     11,200 K
+svchost.exe                   1920 Services                   0      8,668 K
+explorer.exe                  3676 Console                    1    116,628 K
+ShellExperienceHost.exe       5984 Console                    1     48,640 K
+RuntimeBroker.exe             6048 Console                    1     22,120 K
+SearchUI.exe                  6456 Console                    1    130,944 K
+RuntimeBroker.exe             6596 Console                    1     18,964 K

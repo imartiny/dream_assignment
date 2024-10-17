@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+sqlalchemy
+pydantic==2.9.0
+pydantic-settings==2.0.1
+redis==3.5.3
+pandas
+python-dotenv
+psycopg2
+psycopg2-binary
+
+# For testing script
+requests
