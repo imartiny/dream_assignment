@@ -38,14 +38,8 @@ class UnixParser(Parser):
         if not lines:
             raise HTTPException(status_code=400, detail="psaux Content is invalid.")
 
-        header = lines[0]
-        if not header.startswith("USER"):
-            raise HTTPException(status_code=400, detail="psaux Content is invalid.")
-
         for line in lines:
             fields = re.split(r'\s+', line.strip())
-            if len(fields) != len(UnixPsFields.__members__):
-                raise HTTPException(status_code=400, detail="psaux Content is invalid.")
 
             try:
                 process_data = ProcessData(

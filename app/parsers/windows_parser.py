@@ -52,9 +52,6 @@ class WindowsParser(Parser):
                 fields = [line[column_positions[i]:column_positions[i+1]].strip()
                         for i in range(len(column_positions) - 1)] + [line[column_positions[-1]:].split()[0]]
 
-                if len(fields) != len(WindowsTasklistFields.__members__):
-                    raise HTTPException(status_code=400, detail="Tasklist Content is invalid.")
-
                 mem_usage = fields[WindowsTasklistFields.MEM_USAGE.value]
 
                 #  In tasklist mem_usage can be N/A
