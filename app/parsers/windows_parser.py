@@ -32,7 +32,6 @@ class WindowsParser(Parser):
             if line.strip().startswith('='):
                 separator_line_index = i
                 break
-
         if separator_line_index==0:
             raise HTTPException(status_code=400, detail="Tasklist Content is invalid.")
 
@@ -49,33 +48,35 @@ class WindowsParser(Parser):
         process_datas = []
 
         for line in data_lines:
-            fields = [line[column_positions[i]:column_positions[i+1]].strip()
-                      for i in range(len(column_positions) - 1)] + [line[column_positions[-1]:].split()[0]]
-
-            if len(fields) != len(WindowsTasklistFields.__members__):
-                raise HTTPException(status_code=400, detail="Tasklist Content is invalid.")
-
-            mem_usage = fields[WindowsTasklistFields.MEM_USAGE.value]
-            #  In tasklist mem_usage can be N/A
             try:
-                mem_usage = float(mem_usage.replace(',', '').replace('K', ''))
+                fields = [line[column_positions[i]:column_positions[i+1]].strip()
+                        for i in range(len(column_positions) - 1)] + [line[column_positions[-1]:].split()[0]]
+
+                if len(fields) != len(WindowsTasklistFields.__members__):
+                    raise HTTPException(status_code=400, detail="Tasklist Content is invalid.")
+
+                mem_usage = fields[WindowsTasklistFields.MEM_USAGE.value]
+
+                #  In tasklist mem_usage can be N/A
+                try:
+                    mem_usage = float(mem_usage.replace(',', '').replace('K', ''))
+                except Exception:
+                    mem_usage = float(0.0)
+
+                process_data = ProcessData(
+                    user="N/A",  # Tasklist doesn't provide user information
+                    pid=int(fields[WindowsTasklistFields.PID.value]),
+                    cpu_usage=0.0,  # Tasklist doesn't provide CPU usage
+                    mem_usage=mem_usage,
+                    vsz=0,  # Tasklist doesn't provide VSZ
+                    rss=0,  # Tasklist doesn't provide RSS
+                    tty=fields[WindowsTasklistFields.SESSION_NAME.value],
+                    stat="N/A",  # Tasklist doesn't provide status
+                    start_time="N/A",  # Tasklist doesn't provide start time
+                    duration="N/A",  # Tasklist doesn't provide duration time
+                    command=fields[WindowsTasklistFields.IMAGE_NAME.value],
+                )
+                process_datas.append(process_data)  # Collect ProcessRecord instances
             except Exception:
-                mem_usage = float(0.0)
-
-            process_data = ProcessData(
-                user="N/A",  # Tasklist doesn't provide user information
-                pid=int(fields[WindowsTasklistFields.PID.value]),
-                cpu_usage=0.0,  # Tasklist doesn't provide CPU usage
-                mem_usage=mem_usage,
-                vsz=0,  # Tasklist doesn't provide VSZ
-                rss=0,  # Tasklist doesn't provide RSS
-                tty=fields[WindowsTasklistFields.SESSION_NAME.value],
-                stat="N/A",  # Tasklist doesn't provide status
-                start_time="N/A",  # Tasklist doesn't provide start time
-                duration="N/A",  # Tasklist doesn't provide duration time
-                command=fields[WindowsTasklistFields.IMAGE_NAME.value],
-            )
-
-            process_datas.append(process_data)  # Collect ProcessRecord instances
-
+                raise HTTPException(status_code=400, detail="Tasklist Content is invalid.")
         return process_datas
