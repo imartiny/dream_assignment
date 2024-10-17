@@ -55,6 +55,8 @@ It provides an efficient way to handle large volumes of process data and execute
 
 4. Use the `/api/v1/query` endpoint to query and analyze the data.
 
+5. Use the `/api/v1/process/{{process_id}}` endpoint to get a specific process.
+
 ## Architecture and Optimizations
 
 The Smart Process Analyzer uses several optimizations to ensure high performance and scalability:
