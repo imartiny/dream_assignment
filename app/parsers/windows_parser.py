@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from app.models import ProcessData
 from app.parsers.base import Parser
 from typing import List
@@ -32,6 +33,9 @@ class WindowsParser(Parser):
                 separator_line_index = i
                 break
 
+        if separator_line_index==0:
+            raise HTTPException(status_code=400, detail="Tasklist Content is invalid.")
+
         # Extract the header and data lines
         separator = lines[separator_line_index]
         data_lines = lines[separator_line_index + 1:]
@@ -47,8 +51,11 @@ class WindowsParser(Parser):
         for line in data_lines:
             fields = [line[column_positions[i]:column_positions[i+1]].strip()
                       for i in range(len(column_positions) - 1)] + [line[column_positions[-1]:].split()[0]]
-            mem_usage = fields[WindowsTasklistFields.MEM_USAGE.value]
 
+            if len(fields) != len(WindowsTasklistFields.__members__):
+                raise HTTPException(status_code=400, detail="Tasklist Content is invalid.")
+
+            mem_usage = fields[WindowsTasklistFields.MEM_USAGE.value]
             #  In tasklist mem_usage can be N/A
             try:
                 mem_usage = float(mem_usage.replace(',', '').replace('K', ''))

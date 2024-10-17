@@ -1,5 +1,7 @@
 from enum import Enum
 import re
+
+from fastapi import HTTPException
 from app.models import ProcessData
 from app.parsers.base import Parser
 from typing import List, Dict, Any
@@ -34,7 +36,10 @@ class UnixParser(Parser):
         process_datas = []
 
         for line in lines:
-            fields = re.split(r'\s+', line.strip(), maxsplit=10)
+            fields = re.split(r'\s+', line.strip())
+            if len(fields) != len(UnixPsFields.__members__):
+                raise HTTPException(status_code=400, detail="Tasklist Content is invalid.")
+
             process_data = ProcessData(
                 user=fields[UnixPsFields.USER.value],
                 pid=int(fields[UnixPsFields.PID.value]),
